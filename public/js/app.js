@@ -199,6 +199,8 @@ function initLieferantenForm() {
 }
 
 // Load the dashboard as soon as the page is ready
-window.addEventListener('DOMContentLoaded', () => {
-    initLieferantenForm();
-});
+if (typeof window !== 'undefined' && window.document) {
+    window.addEventListener('DOMContentLoaded', () => {
+        initLieferantenForm();
+    });
+}
