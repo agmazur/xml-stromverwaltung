@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lieferanten>
+    <lieferant>
+        <region>Zürich</region>
+        <password>abc1234567</password>
+        <type>strom</type>
+        <date>2026-02-19</date>
+        <price>123.45</price>
+    </lieferant>
+</lieferanten>
