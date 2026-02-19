@@ -7,10 +7,27 @@
                 <xs:element name="lieferant" minOccurs="0" maxOccurs="unbounded">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="name" type="xs:string"/>
-                            <xs:element name="email" type="xs:string" minOccurs="0"/>
-                            <xs:element name="phone" type="xs:string" minOccurs="0"/>
-                            <xs:element name="type" minOccurs="0">
+                            <xs:element name="region">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="Région lémanique"/>
+                                        <xs:enumeration value="Espace Mittelland"/>
+                                        <xs:enumeration value="Nordwestschweiz"/>
+                                        <xs:enumeration value="Zürich"/>
+                                        <xs:enumeration value="Ostschweiz"/>
+                                        <xs:enumeration value="Zentralschweiz"/>
+                                        <xs:enumeration value="Ticino"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="password">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:length value="10"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                            <xs:element name="type">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
                                         <xs:enumeration value="strom"/>
@@ -20,8 +37,9 @@
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
+                            <xs:element name="date" type="xs:date"/>
+                            <xs:element name="price" type="xs:float"/>
                         </xs:sequence>
-                        <xs:attribute name="id" type="xs:string" use="required"/>
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>

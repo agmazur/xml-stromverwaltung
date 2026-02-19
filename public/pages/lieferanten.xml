@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<?xml-stylesheet type="text/xsl" href="/xsl/main.xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>EnerCheck – Landing</title>
@@ -8,40 +9,38 @@
     </head>
 
     <body>
-        <div class="header">
-            <h1>Lieferanten</h1>
-
-            <div class="nav">
-                <a href="/">Landing</a>
-                <a href="/lieferanten">Lieferanten</a>
-                <a href="/kunden">Kunden</a>
-                <a href="/forum">Forum</a>
-            </div>
-        </div>
-
         <div class="main">
             <h2>Lieferanten</h2>
             <p>Enter a supplier and save it to the XML database.</p>
 
-            <form id="lieferanten-form">
+            <form id="lieferanten-form" action="/lieferanten" method="post">
                 <div>
-                    <label for="sup-id">ID</label><br />
-                    <input id="sup-id" name="id" type="text" placeholder="SUP-001" required="required" />
+                    <label for="sup-region">Region</label><br />
+                    <select id="sup-region" name="region">
+                        <option value="">(none)</option>
+                        <option value="Région lémanique">Région lémanique</option>
+                        <option value="Espace Mittelland">Espace Mittelland</option>
+                        <option value="Nordwestschweiz">Nordwestschweiz</option>
+                        <option value="Zürich">Zürich</option>
+                        <option value="Ostschweiz">Ostschweiz</option>
+                        <option value="Zentralschweiz">Zentralschweiz</option>
+                        <option value="Ticino">Ticino</option>
+                    </select>
                 </div>
 
                 <div>
-                    <label for="sup-name">Name</label><br />
-                    <input id="sup-name" name="name" type="text" required="required" />
+                    <label for="sup-password">Password (10 chars)</label><br />
+                    <input id="sup-password" name="password" type="password" maxlength="10" />
                 </div>
 
                 <div>
-                    <label for="sup-email">Email</label><br />
-                    <input id="sup-email" name="email" type="email" />
+                    <label for="sup-date">Date</label><br />
+                    <input id="sup-date" name="date" type="date" />
                 </div>
 
                 <div>
-                    <label for="sup-phone">Phone</label><br />
-                    <input id="sup-phone" name="phone" type="text" />
+                    <label for="sup-price">Price</label><br />
+                    <input id="sup-price" name="price" type="text" />
                 </div>
 
                 <div>

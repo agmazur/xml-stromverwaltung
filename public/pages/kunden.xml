@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
         "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<?xml-stylesheet type="text/xsl" href="/xsl/main.xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>EnerCheck – Landing</title>
@@ -8,17 +9,6 @@
     </head>
 
     <body>
-        <div class="header">
-            <h1>Enercheck</h1>
-
-            <div class="nav">
-                <a href="/">Landing</a>
-                <a href="/lieferanten">Lieferanten</a>
-                <a href="/kunden">Kunden</a>
-                <a href="/forum">Forum</a>
-            </div>
-        </div>
-
         <div class="main">
             <h2>Kunden</h2>
             <p>Welcome! Choose a section using the navigation above.</p>

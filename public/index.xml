@@ -3,17 +3,17 @@
 <?xml-stylesheet type="text/xsl" href="xsl/main.xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>EnerCheck Dashboard</title>
+    <title>EnerCheck</title>
   </head>
   <body>
     <div id="content">
-      <p id="description">Welcome to EnerCheck. A barebones XML/XSLT/FO baseline.</p>
-      <div id="actions">
-        <button id="pdf" onclick="createPdf()">Generate PDF Report</button>
-      </div>
-
-      <div id="dashboard-mount">
-        Loading dashboard...
+      <div class="main">
+        <h1>Welcome to EnerCheck</h1>
+        <p>This is your XML-powered dashboard. Use the navigation buttons above to explore our features.</p>
+        
+        <div id="dashboard-mount">
+          <p>Choose a page from the navigation.</p>
+        </div>
       </div>
     </div>
   </body>

@@ -13,8 +13,7 @@ const PORT = process.env.ENER_CHECK_PORT || 3000;
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 
-// ... existing code ...
-app.use(express.text({ type: 'application/xml' }));
+app.use(express.text({ type: ['application/xml', 'text/plain', 'text/xml'], limit: '10mb' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -31,7 +30,7 @@ const sendXmlResponse = (res, status, message, data = null) => {
 // Main route
 app.get('/', (req, res) => {
     res.set('Content-Type', 'application/xhtml+xml');
-    res.sendFile(path.resolve(__dirname, 'public', 'pages', 'landing.xml'));
+    res.sendFile(path.resolve(__dirname, 'public', 'index.xml'));
 });
 
 app.get('/lieferanten', (req, res) => {
@@ -106,11 +105,6 @@ app.post('/lieferanten', async (req, res) => {
             return sendXmlResponse(res, 400, 'Must provide a <lieferant> element');
         }
 
-        const newId = snippetSupplier.getAttribute('id');
-        if (!newId) {
-            return sendXmlResponse(res, 400, 'Missing required attribute: id');
-        }
-
         if (!fs.existsSync(suppliersPath)) {
             fs.writeFileSync(suppliersPath, `<?xml version="1.0" encoding="UTF-8"?><lieferanten/>`, 'utf-8');
         }
@@ -125,12 +119,6 @@ app.post('/lieferanten', async (req, res) => {
             return sendXmlResponse(res, 500, 'Invalid suppliers storage file (expected <lieferanten>)');
         }
 
-        const select = xpath.useNamespaces({});
-        const existing = select(`//lieferant[@id="${newId}"]`, suppliersDoc);
-        if (existing.length > 0) {
-            return sendXmlResponse(res, 409, `Supplier with id="${newId}" already exists`);
-        }
-
         // Clone into this doc context (no importNode dependency)
         const supplierToAppend = snippetSupplier.cloneNode(true);
         suppliersRoot.appendChild(supplierToAppend);
@@ -138,19 +126,81 @@ app.post('/lieferanten', async (req, res) => {
         const updatedXmlStr = new XMLSerializer().serializeToString(suppliersDoc);
 
         const validationResult = await validateXML({
-            xml: [{ fileName: 'lieferanten.xml', content: updatedXmlStr }],
-            schema: [xsdXmlStr]
+            xml: [{ fileName: 'lieferanten.xml', content: String(updatedXmlStr) }],
+            schema: [String(xsdXmlStr)]
         });
 
         if (!validationResult.valid) {
-            return sendXmlResponse(res, 400, 'Validation failed', validationResult.errors.join('\n'));
+            let errorMsg = 'Validation failed';
+            const errors = validationResult.errors;
+            
+            if (errors.some(e => e.includes('password') && (e.includes('length') || e.includes('facet')))) {
+                errorMsg = 'Passwort inkorrekt';
+            } else if (errors.some(e => e.includes('is not a valid value of the atomic type'))) {
+                 const fieldMatch = errors.find(e => e.includes('is not a valid value of the atomic type'));
+                 if (fieldMatch) {
+                     errorMsg = `Validation failed: ${fieldMatch}`;
+                 }
+            } else if (errors.some(e => e.includes('is missing'))) {
+                 const fieldMatch = errors.find(e => e.includes('is missing'));
+                 errorMsg = fieldMatch || 'Field missing';
+            }
+            
+            return sendXmlResponse(res, 400, errorMsg, errors.join('\n'));
         }
 
         fs.writeFileSync(suppliersPath, updatedXmlStr, 'utf-8');
         return sendXmlResponse(res, 200, 'Supplier saved');
     } catch (error) {
         console.error('Saving supplier failed:', error);
-        return sendXmlResponse(res, 500, 'Internal Server Error');
+        return sendXmlResponse(res, 500, 'Internal Server Error', error.message);
+    }
+});
+
+app.post('/validateSuppliers', async (req, res) => {
+    const xmlSnippet = req.body;
+    const xsdPath = path.resolve(__dirname, 'data', 'lieferanten.xsd');
+
+    try {
+        if (!xmlSnippet || xmlSnippet.trim() === '') {
+            return sendXmlResponse(res, 400, 'No XML provided');
+        }
+
+        const xsdXmlStr = fs.readFileSync(xsdPath, 'utf-8');
+        
+        // Wrap snippet in root element for validation if it's just a <lieferant>
+        let xmlToValidate = xmlSnippet;
+        if (xmlSnippet.includes('<lieferant') && !xmlSnippet.includes('<lieferanten')) {
+            xmlToValidate = `<?xml version="1.0" encoding="UTF-8"?><lieferanten>${xmlSnippet}</lieferanten>`;
+        }
+
+        const validationResult = await validateXML({
+            xml: [{ fileName: 'validate.xml', content: String(xmlToValidate) }],
+            schema: [String(xsdXmlStr)]
+        });
+
+        if (!validationResult.valid) {
+            let errorMsg = 'Validation failed';
+            const errors = validationResult.errors;
+            
+            if (errors.some(e => e.includes('password') && (e.includes('length') || e.includes('facet')))) {
+                errorMsg = 'Passwort inkorrekt';
+            } else if (errors.some(e => e.includes('is not a valid value of the atomic type'))) {
+                 const fieldMatch = errors.find(e => e.includes('is not a valid value of the atomic type'));
+                 if (fieldMatch) {
+                     errorMsg = `Validation failed: ${fieldMatch}`;
+                 }
+            } else if (errors.some(e => e.includes('is missing'))) {
+                 const fieldMatch = errors.find(e => e.includes('is missing'));
+                 errorMsg = fieldMatch || 'Field missing';
+            }
+            return sendXmlResponse(res, 400, errorMsg, errors.join('\n'));
+        }
+
+        return sendXmlResponse(res, 200, 'XML is valid against XSD');
+    } catch (error) {
+        console.error('Validation failed:', error);
+        return sendXmlResponse(res, 500, 'Internal Server Error', error.message);
     }
 });
 

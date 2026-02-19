@@ -13,26 +13,24 @@
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <title><xsl:value-of select="xhtml:head/xhtml:title" /></title>
-        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="/css/style.css" />
       </head>
       <body>
         <header>
           <h1><xsl:value-of select="xhtml:head/xhtml:title" /></h1>
+          <nav class="nav">
+            <a href="/">Home</a>
+            <a href="/lieferanten">Lieferanten</a>
+            <a href="/kunden">Kunden</a>
+            <a href="/forum">Forum</a>
+          </nav>
         </header>
         <main>
-          <p><xsl:value-of select="xhtml:body/xhtml:div[@id='content']/xhtml:p[@id='description']" /></p>
-          
-          <div class="actions">
-            <button onclick="createPdf()">Generate PDF</button>
-          </div>
-
-          <section id="data-preview">
-            <h2>Current Database State</h2>
-            <iframe src="../data/database.xml" width="100%" height="300px"/>
-          </section>
+          <xsl:copy-of select="xhtml:body/xhtml:div[@class='main']/*" />
+          <xsl:copy-of select="xhtml:body/xhtml:div[@id='content']/*" />
         </main>
         
-        <script src="js/app.js"></script>
+        <script src="/js/app.js"></script>
       </body>
     </html>
   </xsl:template>
