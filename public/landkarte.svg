@@ -1,0 +1,36 @@
+<svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+    <a href="#region-1" target="daten-anzeige">
+        <rect x="50" y="200" width="80" height="60" class="region-shape" />
+        <text x="60" y="235" fill="white" font-size="10">Genfersee</text>
+    </a>
+
+    <a href="#region-2" target="daten-anzeige">
+        <rect x="140" y="150" width="100" height="80" class="region-shape" />
+        <text x="150" y="195" fill="white" font-size="10">Mittelland</text>
+    </a>
+
+    <a href="#region-3" target="daten-anzeige">
+        <rect x="140" y="80" width="80" height="60" class="region-shape" />
+        <text x="145" y="115" fill="white" font-size="10">Nordwest-CH</text>
+    </a>
+
+    <a href="#region-4" target="daten-anzeige">
+        <rect x="230" y="80" width="60" height="60" class="region-shape" />
+        <text x="240" y="115" fill="white" font-size="10">Zürich</text>
+    </a>
+
+    <a href="#region-5" target="daten-anzeige">
+        <rect x="300" y="80" width="100" height="100" class="region-shape" />
+        <text x="320" y="135" fill="white" font-size="10">Ost-CH</text>
+    </a>
+
+    <a href="#region-6" target="daten-anzeige">
+        <rect x="230" y="150" width="60" height="80" class="region-shape" />
+        <text x="235" y="195" fill="white" font-size="8">Zentral-CH</text>
+    </a>
+
+    <a href="#region-7" target="daten-anzeige">
+        <rect x="250" y="240" width="60" height="50" class="region-shape" />
+        <text x="265" y="270" fill="white" font-size="10">Tessin</text>
+    </a>
+</svg>
