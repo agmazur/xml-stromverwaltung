@@ -35,7 +35,7 @@
 
                 <div>
                     <label for="sup-date">Date</label><br />
-                    <input id="sup-date" name="date" type="date" />
+                    <input id="sup-date" name="date" type="text" />
                 </div>
 
                 <div>
