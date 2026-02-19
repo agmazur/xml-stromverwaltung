@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Enercheck>
+    
+    <Region name="Genferseeregion" bfs_id="1">
+        <Kraftwerk id="kw-01">
+            <Name>Bieudron (Grande Dixence)</Name>
+            <Stromquelle>Wasserkraft</Stromquelle>
+            <Uptime>94.5%</Uptime>
+            <Produktion einheit="GWh">2000</Produktion>
+        </Kraftwerk>
+    </Region>
+
+    <Region name="Espace Mittelland" bfs_id="2">
+        <Kraftwerk id="kw-02">
+            <Name>Wasserkraftwerk Mühleberg</Name>
+            <Stromquelle>Wasserkraft</Stromquelle>
+            <Uptime>98.2%</Uptime>
+            <Produktion einheit="GWh">150</Produktion>
+        </Kraftwerk>
+    </Region>
+
+    <Region name="Nordwestschweiz" bfs_id="3">
+        <Kraftwerk id="kw-03">
+            <Name>Kernkraftwerk Beznau I</Name>
+            <Stromquelle>Kernkraft</Stromquelle>
+            <Uptime>91.0%</Uptime>
+            <Produktion einheit="GWh">3000</Produktion>
+        </Kraftwerk>
+    </Region>
+
+    <Region name="Zürich" bfs_id="4">
+        <Kraftwerk id="kw-04">
+            <Name>Heizkraftwerk Aubrugg</Name>
+            <Stromquelle>Biomasse/Holz</Stromquelle>
+            <Uptime>88.4%</Uptime>
+            <Produktion einheit="GWh">120</Produktion>
+        </Kraftwerk>
+    </Region>
+
+    <Region name="Ostschweiz" bfs_id="5">
+        <Kraftwerk id="kw-05">
+            <Name>Pumpspeicherwerk Limmern</Name>
+            <Stromquelle>Wasserkraft</Stromquelle>
+            <Uptime>96.8%</Uptime>
+            <Produktion einheit="GWh">1450</Produktion>
+        </Kraftwerk>
+    </Region>
+
+    <Region name="Zentralschweiz" bfs_id="6">
+        <Kraftwerk id="kw-06">
+            <Name>Kraftwerk Amsteg</Name>
+            <Stromquelle>Wasserkraft</Stromquelle>
+            <Uptime>99.1%</Uptime>
+            <Produktion einheit="GWh">450</Produktion>
+        </Kraftwerk>
+    </Region>
+
+    <Region name="Tessin" bfs_id="7">
+        <Kraftwerk id="kw-07">
+            <Name>Maggia Kraftwerke</Name>
+            <Stromquelle>Wasserkraft</Stromquelle>
+            <Uptime>97.5%</Uptime>
+            <Produktion einheit="GWh">600</Produktion>
+        </Kraftwerk>
+    </Region>
+
+</Enercheck>
