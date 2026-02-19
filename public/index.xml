@@ -21,18 +21,5 @@
         <p id="description">Energiepreise der 7 BFS-Regionen der Schweiz</p>
       </div>
 
-      <div id="stats-container" style="display: flex; gap: 20px; margin-top: 40px; border-top: 1px solid #ccc; padding-top: 20px;">
-        
-        <div style="flex: 1;">
-          <h3 style="font-family: sans-serif; color: #333;">Region auswählen</h3>
-          <object data="landkarte.svg" type="image/svg+xml" width="100%"></object>
-        </div>
-
-        <div style="flex: 1;">
-          <h3 style="font-family: sans-serif; color: #333;">Kraftwerks-Details</h3>
-          <iframe name="daten-anzeige" src="/data/kraftwerke.xml" style="width: 100%; height: 500px; border: none;"></iframe>
-        </div>
-
-      </div>
     </div> </body>
 </html>

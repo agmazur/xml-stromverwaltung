@@ -7,4 +7,11 @@
         <date>2026-02-19</date>
         <price>123.45</price>
     </lieferant>
+    <lieferant>
+    <region>Zentral-CH</region>
+    <password>AB1234</password> //wie noé erwähnt ^^
+    <type>wasser</type>
+    <date>2026-02-20</date>
+    <price>145.20</price>
+  </lieferant>
 </lieferanten>
