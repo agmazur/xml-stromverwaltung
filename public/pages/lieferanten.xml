@@ -4,20 +4,27 @@
 <?xml-stylesheet type="text/xsl" href="/xsl/main.xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>EnerCheck – Landing</title>
+        <title>EnerCheck</title>
         <link rel="stylesheet" href="/css/style.css" />
     </head>
 
     <body>
         <div class="main">
             <h2>Lieferanten</h2>
-            <p>Enter a supplier and save it to the XML database.</p>
+            <p>Sie sind das Rückgradt der Schweiz!<br/>
+            Über die Fläche "Daten aktualisieren" können Sie Ihre aktuellen Stromwerte veröffentlichen.<br/>
+                Sie können ebenfalls eine Übersicht generieren lassen, um den Preisverlauf in Ihrer Region zu verfolgen.
+            </p>
+            <div>
+                <img src="img\producer.jpg" alt="electricity producer at work" width="600" height="400" />
+            </div>
 
+            <h3>Daten aktualisieren</h3>
             <form id="lieferanten-form" action="/lieferanten" method="post">
                 <div>
                     <label for="sup-region">Region</label><br />
                     <select id="sup-region" name="region">
-                        <option value="">(none)</option>
+                        <option value="">(leer)</option>
                         <option value="Région lémanique">Région lémanique</option>
                         <option value="Espace Mittelland">Espace Mittelland</option>
                         <option value="Nordwestschweiz">Nordwestschweiz</option>
@@ -25,37 +32,40 @@
                         <option value="Ostschweiz">Ostschweiz</option>
                         <option value="Zentralschweiz">Zentralschweiz</option>
                         <option value="Ticino">Ticino</option>
-                    </select>
+                    </select><br /><br />
                 </div>
 
                 <div>
-                    <label for="sup-password">Password (10 chars)</label><br />
+                    <label for="sup-password">Passwort (10 Zeichen)</label><br />
                     <input id="sup-password" name="password" type="password" maxlength="10" />
+                    <br /><br />
                 </div>
 
                 <div>
-                    <label for="sup-date">Date</label><br />
+                    <label for="sup-date">Datum</label><br />
                     <input id="sup-date" name="date" type="text" />
+                    <br /><br />
                 </div>
 
                 <div>
-                    <label for="sup-price">Price</label><br />
+                    <label for="sup-price">Preis</label><br />
                     <input id="sup-price" name="price" type="text" />
+                    <br /><br />
                 </div>
 
                 <div>
-                    <label for="sup-type">Type</label><br />
+                    <label for="sup-type">Typ</label><br />
                     <select id="sup-type" name="type">
-                        <option value="">(none)</option>
+                        <option value="">(leer)</option>
                         <option value="strom">strom</option>
                         <option value="gas">gas</option>
                         <option value="solar">solar</option>
-                        <option value="mixed">mixed</option>
+                        <option value="mixed">gemischt</option>
                     </select>
                 </div>
 
                 <div class="actions">
-                    <button type="submit">Save supplier</button>
+                    <button type="submit">Eintrag speichern</button>
                 </div>
             </form>
 

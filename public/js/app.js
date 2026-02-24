@@ -141,11 +141,11 @@ function initLieferantenForm() {
                 if (statusEl) {
                     let missing = [];
                     if (!region) missing.push("Region");
-                    if (!password) missing.push("Password");
-                    if (!type) missing.push("Type");
-                    if (!date) missing.push("Date");
-                    if (!price) missing.push("Price");
-                    statusEl.textContent = 'Error: Missing fields: ' + missing.join(", ");
+                    if (!password) missing.push("Passwort");
+                    if (!type) missing.push("Typ");
+                    if (!date) missing.push("Datum");
+                    if (!price) missing.push("Preis");
+                    statusEl.textContent = 'Bitte füllen Sie folgende Felder aus: ' + missing.join(", ");
                     statusEl.style.color = 'red';
                 }
                 return;
