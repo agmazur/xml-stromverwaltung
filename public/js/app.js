@@ -122,10 +122,10 @@ function initLieferantenForm() {
             }
         };
 
-        // Add event listeners for each field to trigger validation
+        /* Add event listeners for each field to trigger validation
         form.querySelectorAll('input, select').forEach(element => {
             element.addEventListener('change', validateAndGenerate);
-            element.addEventListener('input', validateAndGenerate);
+            element.addEventListener('input', validateAndGenerate);*/
         });
 
         form.addEventListener('submit', async (e) => {
@@ -141,11 +141,11 @@ function initLieferantenForm() {
                 if (statusEl) {
                     let missing = [];
                     if (!region) missing.push("Region");
-                    if (!password) missing.push("Password");
-                    if (!type) missing.push("Type");
-                    if (!date) missing.push("Date");
-                    if (!price) missing.push("Price");
-                    statusEl.textContent = 'Error: Missing fields: ' + missing.join(", ");
+                    if (!password) missing.push("Passwort");
+                    if (!type) missing.push("Typ");
+                    if (!date) missing.push("Datum");
+                    if (!price) missing.push("Preis");
+                    statusEl.textContent = 'Bitte füllen Sie folgende Felder aus: ' + missing.join(", ");
                     statusEl.style.color = 'red';
                 }
                 return;

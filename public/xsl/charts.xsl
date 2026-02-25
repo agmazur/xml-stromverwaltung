@@ -42,7 +42,7 @@
         <header>
           <h1><xsl:value-of select="xhtml:head/xhtml:title" /></h1>
           <nav class="actions">
-            <a href="index.xml" class="button-link">Zurück zum Dashboard</a>
+            <a href="index.xml" class="button-nav">Zurück zum Dashboard</a>
           </nav>
         </header>
         <main>

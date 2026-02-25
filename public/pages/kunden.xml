@@ -4,20 +4,19 @@
 <?xml-stylesheet type="text/xsl" href="/xsl/main.xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <title>EnerCheck – Landing</title>
+        <title>EnerCheck</title>
         <link rel="stylesheet" href="/css/style.css" />
     </head>
 
     <body>
         <div class="main">
             <h2>Kunden</h2>
-            <p>Welcome! Choose a section using the navigation above.</p>
-
-            <div class="actions">
-                <button onclick="createPdf()">Generate PDF</button>
-            </div>
-
-            <div id="dashboard-mount">Loading dashboard...</div>
+            <p>Danke, dass Sie uns vertrauen.</p>
+            <p>Hier finden Sie eine Übersicht über den Verlauf der Strompreise in sämtlichen Regionen der Schweiz!<br/>
+                Bei Belieben können sie die Übersicht auch als PDF exportieren und ausdrucken.<br/>
+                Bei Fragen wenden Sie sich bitte an das <a href="\..\pages\forum.xml">Forum.</a>
+            </p>
+            <img src="img\kids_on_tablet.jpg" alt="Kids using electronic devices" width="600" height="400" />
         </div>
 
         <script type="text/javascript" src="/js/app.js"></script>

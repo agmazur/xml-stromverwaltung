@@ -12,13 +12,31 @@
       </div>
 
       <div class="main">
-        <h1>Welcome to EnerCheck</h1>
-        <p>This is your XML-powered dashboard. Use the navigation buttons above to explore our features.</p>
-        
-        <div id="dashboard-mount">
-          <p>Choose a page from the navigation.</p>
-        </div>
-        <p id="description">Energiepreise der 7 BFS-Regionen der Schweiz</p>
+        <h1>Wo Strom <span class="faded">transparent</span> wird.</h1>
+        <p>Willkommen auf der auf der Plattform EnerCheck! <br/>
+          Ob Sie Strom beziehen oder produzieren - hier finden Sie alles, was Sie brauchen
+        </p>
+        <h2>Wieso EnerCheck?</h2>
+        <p>Die letzten paar Jahre waren geprägt von einer zunehmenden Energiekrise: Preise stiegen, Vertrauen sank.<br/>
+          Um dies zu lösen, hat die "Energie-Preis-Auskunfts-Zentralstelle" (EPAZS) das Vorhaben "EPAZS bi de lüt" lanciert.
+          Durch dieses Vorhaben wurden Mitarbeitende in sämtliche Städte der Schweiz geschickt, um eine der grössten Herausforderungen
+          der Energiemarkts zu addressieren: <b>Transparenz.</b>
+          </p>
+        <p>
+          Wenn auch durch dessen Umsetzung die Kommunikation und Überwachung der Strompreise erleichtert wurde, kam dies mit
+          erheblichen Zusatzkosten.
+          Diese gilt es nun zu reduzieren, wobei die Kommunikation und Transparenz aufrechterhalten werden sollen.
+        </p>
+        <p>
+          Die Antwort darauf ist <b>EnerCheck</b>. Hier finden Sie alles, was für einen transparenten Stromkauf und -Vertrieb nötig ist.
+        </p>
+        <p>
+          Bei Fragen zur Plattform, die Übersichten oder die Interaktion besuchen Sie bitte das <a href="\..\pages\forum.xml">Forum.</a>
+        </p>
+        <br/>
+      </div>
+      <div>
+        <img src="img\family.jpg" alt="Family using electricity" width="600" height="400" />
       </div>
 
     </div> </body>
