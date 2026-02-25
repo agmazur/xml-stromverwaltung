@@ -7,6 +7,10 @@
   </head>
   <body>
     <div id="content">
+      <div id="actions">
+        <button id="pdf">PDF-Auszug erstellen</button>
+      </div>
+
       <div class="main">
         <h1>Welcome to EnerCheck</h1>
         <p>This is your XML-powered dashboard. Use the navigation buttons above to explore our features.</p>
@@ -16,6 +20,6 @@
         </div>
         <p id="description">Energiepreise der 7 BFS-Regionen der Schweiz</p>
       </div>
-    </div>
-  </body>
+
+    </div> </body>
 </html>
