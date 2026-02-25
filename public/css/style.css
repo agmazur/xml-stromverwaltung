@@ -73,8 +73,8 @@ main {
 
 button, .button-link {
   padding: 10px 20px;
-  background: #007bff;
-  color: #fff;
+  background: #f6b600;
+  color: #333;
   border: none;
   cursor: pointer;
   text-decoration: none;
@@ -87,7 +87,23 @@ button, .button-link {
 }
 
 button:hover, .button-link:hover {
-  background: #0056b3;
+  background: #333;
+  color: #f6b600;
+}
+
+.button-nav{
+  color: #f6b600;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid #f6b600;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.button-nav:hover{
+  background-color: #f6b600;
+  color: #333;
 }
 
 iframe {
