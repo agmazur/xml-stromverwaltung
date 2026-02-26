@@ -39,12 +39,8 @@
             </xsl:if>
           </div>
 
-          <section id="data-preview">
-            <h2>Inhalt der Datenbank</h2>
-            <iframe src="../data/database.xml" width="100%" height="300px"/>
-          </section>
 
-          <xsl:if test="not(//xhtml:div[@class='main']/xhtml:h1 = 'Welcome to EnerCheck')">
+          <xsl:if test="//xhtml:div[@class='main']/xhtml:h2 = 'Lieferanten'">
             <section id="kraftwerke-integration" style="margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px;">
               <h2 style="font-family: sans-serif; color: #333; text-align: center;">Regionale Kraftwerks-Analyse</h2>
               
