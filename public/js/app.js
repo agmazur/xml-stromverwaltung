@@ -122,10 +122,10 @@ function initLieferantenForm() {
             }
         };
 
-        /* Add event listeners for each field to trigger validation
+        /* Add event listeners for each field to trigger validation*/
         form.querySelectorAll('input, select').forEach(element => {
             element.addEventListener('change', validateAndGenerate);
-            element.addEventListener('input', validateAndGenerate);*/
+            element.addEventListener('input', validateAndGenerate);
         });
 
         form.addEventListener('submit', async (e) => {
