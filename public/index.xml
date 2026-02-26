@@ -7,9 +7,6 @@
   </head>
   <body>
     <div id="content">
-      <div id="actions">
-        <button id="pdf">PDF-Auszug erstellen</button>
-      </div>
 
       <div class="main">
         <h1>Wo Strom <span class="faded">transparent</span> wird.</h1>

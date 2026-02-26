@@ -33,7 +33,9 @@
           <p><xsl:value-of select="xhtml:body/xhtml:div[@id='content']/xhtml:p[@id='description']" /></p>
           
           <div class="actions">
-            <button onclick="createPdf()" class="button-link">PDF generieren</button>
+            <xsl:if test="//xhtml:div[@class='main']/xhtml:h2 = 'Lieferanten' or //xhtml:div[@class='main']/xhtml:h2 = 'Kunden'">
+              <button onclick="createPdf()" class="button-link">PDF generieren</button>
+            </xsl:if>
             <a href="charts.xml" class="button-link">Preisdiagramme anzeigen</a>
           </div>
 
