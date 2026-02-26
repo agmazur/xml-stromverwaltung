@@ -48,6 +48,11 @@ app.get('/forum', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public', 'pages', 'forum.xml'));
 });
 
+app.get('/charts', (req, res) => {
+    res.set('Content-Type', 'application/xhtml+xml');
+    res.sendFile(path.resolve(__dirname, 'public', 'charts.xml'));
+});
+
 app.post('/convertToPdf', async (req, res) => {
     try {
         let foData = req.body;

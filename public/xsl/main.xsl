@@ -23,6 +23,7 @@
             <a href="/lieferanten">Lieferanten</a>
             <a href="/kunden">Kunden</a>
             <a href="/forum">Forum</a>
+            <a href="/charts">Preisdiagramme</a>
           </nav>
         </header>
 
@@ -36,7 +37,6 @@
             <xsl:if test="//xhtml:div[@class='main']/xhtml:h2 = 'Lieferanten' or //xhtml:div[@class='main']/xhtml:h2 = 'Kunden'">
               <button onclick="createPdf()" class="button-link">PDF generieren</button>
             </xsl:if>
-            <a href="charts.xml" class="button-link">Preisdiagramme anzeigen</a>
           </div>
 
           <section id="data-preview">

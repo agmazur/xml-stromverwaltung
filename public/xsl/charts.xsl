@@ -41,8 +41,12 @@
       <body>
         <header>
           <h1><xsl:value-of select="xhtml:head/xhtml:title" /></h1>
-          <nav class="actions">
-            <a href="index.xml" class="button-nav">Zurück zum Dashboard</a>
+          <nav class="nav">
+            <a href="/">Home</a>
+            <a href="/lieferanten">Lieferanten</a>
+            <a href="/kunden">Kunden</a>
+            <a href="/forum">Forum</a>
+            <a href="/charts">Preisdiagramme</a>
           </nav>
         </header>
         <main>
