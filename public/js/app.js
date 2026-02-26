@@ -75,59 +75,7 @@ function initLieferantenForm() {
     if (form) {
         const statusEl = document.getElementById('lieferanten-status');
 
-        const validateAndGenerate = async () => {
-            const region = form.querySelector('[name="region"]').value.trim();
-            const password = form.querySelector('[name="password"]').value.trim();
-            const type = form.querySelector('[name="type"]').value.trim();
-            const date = form.querySelector('[name="date"]').value.trim();
-            const price = form.querySelector('[name="price"]').value.trim();
-
-            const parts = [];
-            parts.push(`<lieferant>`);
-            if (region) parts.push(`<region>${escapeXmlText(region)}</region>`);
-            if (password) parts.push(`<password>${escapeXmlText(password)}</password>`);
-            if (type) parts.push(`<type>${escapeXmlText(type)}</type>`);
-            if (date) parts.push(`<date>${escapeXmlText(date)}</date>`);
-            if (price) parts.push(`<price>${escapeXmlText(price)}</price>`);
-            parts.push(`</lieferant>`);
-
-            const xml = parts.join('');
-
-            try {
-                const response = await fetch('/validateSuppliers', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/xml' },
-                    body: xml
-                });
-                
-                const resultText = await response.text();
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(resultText, "application/xml");
-                const message = xmlDoc.getElementsByTagName("message")[0]?.textContent || "Unknown response";
-                
-                if (response.ok) {
-                    if (statusEl) {
-                        statusEl.textContent = 'XML generated and valid: ' + message;
-                        statusEl.style.color = 'green';
-                    }
-                } else {
-                    const details = xmlDoc.getElementsByTagName("data")[0]?.textContent || "";
-                    if (statusEl) {
-                        statusEl.textContent = 'Validation error: ' + message + (details ? " - " + details : "");
-                        statusEl.style.color = 'red';
-                    }
-                }
-            } catch (err) {
-                console.error('Real-time validation failed:', err);
-            }
-        };
-
-        /* Add event listeners for each field to trigger validation*/
-        form.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('change', validateAndGenerate);
-            element.addEventListener('input', validateAndGenerate);
-        });
-
+        /* Removed real-time validation event listeners */
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
 

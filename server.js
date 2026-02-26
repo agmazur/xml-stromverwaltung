@@ -124,14 +124,14 @@ app.post('/lieferanten', async (req, res) => {
             return sendXmlResponse(res, 500, 'Invalid suppliers storage file (expected <lieferanten>)');
         }
 
-        // Clone into this doc context (no importNode dependency)
-        const supplierToAppend = snippetSupplier.cloneNode(true);
+        // Correctly import the node into the target document
+        const supplierToAppend = suppliersDoc.importNode(snippetSupplier, true);
         suppliersRoot.appendChild(supplierToAppend);
 
         const updatedXmlStr = new XMLSerializer().serializeToString(suppliersDoc);
 
         const validationResult = await validateXML({
-            xml: [{ fileName: 'lieferanten.xml', content: String(updatedXmlStr) }],
+            xml: [{ fileName: 'lieferanten.xml', contents: String(updatedXmlStr) }],
             schema: [String(xsdXmlStr)]
         });
 
@@ -139,19 +139,20 @@ app.post('/lieferanten', async (req, res) => {
             let errorMsg = 'Validation failed';
             const errors = validationResult.errors;
             
-            if (errors.some(e => e.includes('password') && (e.includes('length') || e.includes('facet')))) {
+            if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
                 errorMsg = 'Passwort inkorrekt';
-            } else if (errors.some(e => e.includes('is not a valid value of the atomic type'))) {
-                 const fieldMatch = errors.find(e => e.includes('is not a valid value of the atomic type'));
+            } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
+                 const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
                  if (fieldMatch) {
-                     errorMsg = `Validation failed: ${fieldMatch}`;
+                     errorMsg = `Validation failed: ${fieldMatch.message}`;
                  }
-            } else if (errors.some(e => e.includes('is missing'))) {
-                 const fieldMatch = errors.find(e => e.includes('is missing'));
-                 errorMsg = fieldMatch || 'Field missing';
+            } else if (errors.some(e => e.message.includes('is missing'))) {
+                 const fieldMatch = errors.find(e => e.message.includes('is missing'));
+                 errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
             }
             
-            return sendXmlResponse(res, 400, errorMsg, errors.join('\n'));
+            const errorDetails = errors.map(e => e.rawMessage).join('\n');
+            return sendXmlResponse(res, 400, errorMsg, errorDetails);
         }
 
         fs.writeFileSync(suppliersPath, updatedXmlStr, 'utf-8');
@@ -180,7 +181,7 @@ app.post('/validateSuppliers', async (req, res) => {
         }
 
         const validationResult = await validateXML({
-            xml: [{ fileName: 'validate.xml', content: String(xmlToValidate) }],
+            xml: [{ fileName: 'validate.xml', contents: String(xmlToValidate) }],
             schema: [String(xsdXmlStr)]
         });
 
@@ -188,18 +189,19 @@ app.post('/validateSuppliers', async (req, res) => {
             let errorMsg = 'Validation failed';
             const errors = validationResult.errors;
             
-            if (errors.some(e => e.includes('password') && (e.includes('length') || e.includes('facet')))) {
+            if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
                 errorMsg = 'Passwort inkorrekt';
-            } else if (errors.some(e => e.includes('is not a valid value of the atomic type'))) {
-                 const fieldMatch = errors.find(e => e.includes('is not a valid value of the atomic type'));
+            } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
+                 const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
                  if (fieldMatch) {
-                     errorMsg = `Validation failed: ${fieldMatch}`;
+                     errorMsg = `Validation failed: ${fieldMatch.message}`;
                  }
-            } else if (errors.some(e => e.includes('is missing'))) {
-                 const fieldMatch = errors.find(e => e.includes('is missing'));
-                 errorMsg = fieldMatch || 'Field missing';
+            } else if (errors.some(e => e.message.includes('is missing'))) {
+                 const fieldMatch = errors.find(e => e.message.includes('is missing'));
+                 errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
             }
-            return sendXmlResponse(res, 400, errorMsg, errors.join('\n'));
+            const errorDetails = errors.map(e => e.rawMessage).join('\n');
+            return sendXmlResponse(res, 400, errorMsg, errorDetails);
         }
 
         return sendXmlResponse(res, 200, 'XML is valid against XSD');
@@ -252,7 +254,7 @@ app.post('/updateData', async (req, res) => {
         const validationResult = await validateXML({
             xml: [{
                 fileName: 'database.xml',
-                content: updatedXmlStr
+                contents: updatedXmlStr
             }],
             schema: [xsdXmlStr]
         });
@@ -261,7 +263,8 @@ app.post('/updateData', async (req, res) => {
             fs.writeFileSync(dbPath, updatedXmlStr, 'utf-8');
             sendXmlResponse(res, 200, 'Data updated successfully');
         } else {
-            sendXmlResponse(res, 400, 'Validation failed', validationResult.errors.join('\n'));
+            const errorDetails = validationResult.errors.map(e => e.rawMessage).join('\n');
+            sendXmlResponse(res, 400, 'Validation failed', errorDetails);
         }
     } catch (error) {
         console.error('Update failed:', error);
