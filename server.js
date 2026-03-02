@@ -27,6 +27,26 @@ const sendXmlResponse = (res, status, message, data = null) => {
     res.status(status).send(xml);
 };
 
+const parseValidationErrors = (validationResult) => {
+    let errorMsg = 'Validation failed';
+    const errors = validationResult.errors;
+
+    if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
+        errorMsg = 'Passwort inkorrekt';
+    } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
+         const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
+         if (fieldMatch) {
+             errorMsg = `Validation failed: ${fieldMatch.message}`;
+         }
+    } else if (errors.some(e => e.message.includes('is missing'))) {
+         const fieldMatch = errors.find(e => e.message.includes('is missing'));
+         errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
+    }
+
+    const errorDetails = errors.map(e => e.rawMessage).join('\n');
+    return { errorMsg, errorDetails };
+};
+
 // Main route
 app.get('/', (req, res) => {
     res.set('Content-Type', 'application/xhtml+xml');
@@ -136,22 +156,7 @@ app.post('/lieferanten', async (req, res) => {
         });
 
         if (!validationResult.valid) {
-            let errorMsg = 'Validation failed';
-            const errors = validationResult.errors;
-            
-            if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
-                errorMsg = 'Passwort inkorrekt';
-            } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
-                 if (fieldMatch) {
-                     errorMsg = `Validation failed: ${fieldMatch.message}`;
-                 }
-            } else if (errors.some(e => e.message.includes('is missing'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is missing'));
-                 errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
-            }
-            
-            const errorDetails = errors.map(e => e.rawMessage).join('\n');
+            const { errorMsg, errorDetails } = parseValidationErrors(validationResult);
             return sendXmlResponse(res, 400, errorMsg, errorDetails);
         }
 
@@ -186,21 +191,7 @@ app.post('/validateSuppliers', async (req, res) => {
         });
 
         if (!validationResult.valid) {
-            let errorMsg = 'Validation failed';
-            const errors = validationResult.errors;
-            
-            if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
-                errorMsg = 'Passwort inkorrekt';
-            } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
-                 if (fieldMatch) {
-                     errorMsg = `Validation failed: ${fieldMatch.message}`;
-                 }
-            } else if (errors.some(e => e.message.includes('is missing'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is missing'));
-                 errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
-            }
-            const errorDetails = errors.map(e => e.rawMessage).join('\n');
+            const { errorMsg, errorDetails } = parseValidationErrors(validationResult);
             return sendXmlResponse(res, 400, errorMsg, errorDetails);
         }
 
