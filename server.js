@@ -98,9 +98,19 @@ app.post('/convertToPdf', async (req, res) => {
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const tempPath = path.resolve(__dirname, 'temp.pdf');
-        
+
         fs.writeFileSync(tempPath, buffer);
-        res.sendFile(tempPath);
+
+        res.sendFile(tempPath, (err) => {
+            // Clean up temp file after sending (success or failure)
+            fs.unlink(tempPath, (unlinkErr) => {
+                if (unlinkErr) console.error('Failed to delete temp.pdf:', unlinkErr);
+            });
+
+            if (err) {
+                console.error('Failed to send PDF:', err);
+            }
+        });
     } catch (error) {
         console.error('PDF conversion failed:', error);
         sendXmlResponse(res, 500, 'Error generating PDF');
