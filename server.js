@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 import xpath from 'xpath';
 import { validateXML } from 'xmllint-wasm';
+import { Xslt, XmlParser } from 'xslt-processor';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -73,21 +74,34 @@ app.get('/charts', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public', 'charts.xml'));
 });
 
-app.post('/convertToPdf', async (req, res) => {
+app.get('/generatePdf', async (req, res) => {
     try {
-        let foData = req.body;
+        const dbPath = path.resolve(__dirname, 'data', 'database.xml');
+        const xslPath = path.resolve(__dirname, 'public', 'xsl', 'fo.xsl');
 
-        if (typeof foData === 'object' && foData !== null && Object.keys(foData).length > 0) {
-            foData = foData.fo || Object.keys(foData)[0];
+        if (!fs.existsSync(dbPath)) {
+            return sendXmlResponse(res, 404, 'Database file not found');
         }
 
-        if (!foData || (typeof foData === 'string' && foData.trim() === '')) {
-             return sendXmlResponse(res, 400, 'No FO data provided');
+        if (!fs.existsSync(xslPath)) {
+            return sendXmlResponse(res, 404, 'XSL stylesheet not found');
         }
 
+        const dbXmlStr = fs.readFileSync(dbPath, 'utf-8');
+        const xslStr = fs.readFileSync(xslPath, 'utf-8');
+
+        // Transform XML to FO using server-side XSLT
+        const xslt = new Xslt();
+        const xmlParser = new XmlParser();
+        const foString = await xslt.xsltProcess(
+            xmlParser.xmlParse(dbXmlStr),
+            xmlParser.xmlParse(xslStr)
+        );
+
+        // Send FO to PDF converter
         const response = await fetch('https://fop.xml.hslu-edu.ch/fop.php', {
             method: "POST",
-            body: foData,
+            body: foString,
         });
 
         if (!response.ok) {
@@ -102,14 +116,10 @@ app.post('/convertToPdf', async (req, res) => {
         fs.writeFileSync(tempPath, buffer);
 
         res.sendFile(tempPath, (err) => {
-            // Clean up temp file after sending (success or failure)
             fs.unlink(tempPath, (unlinkErr) => {
                 if (unlinkErr) console.error('Failed to delete temp.pdf:', unlinkErr);
             });
-
-            if (err) {
-                console.error('Failed to send PDF:', err);
-            }
+            if (err) console.error('Failed to send PDF:', err);
         });
     } catch (error) {
         console.error('PDF conversion failed:', error);

@@ -1,33 +1,7 @@
-async function loadXMLDoc(filename) {
-    const response = await fetch(filename);
-    const text = await response.text();
-    return new DOMParser().parseFromString(text, "application/xml");
-}
-
 async function createPdf() {
     console.log("PDF wird generiert...");
     try {
-        // Load data and stylesheet
-        const dbXml = await loadXMLDoc('../data/database.xml');
-        const xslFo = await loadXMLDoc('xsl/fo.xsl');
-
-        // Initialize XSLT Processor
-        const xsltProcessor = new XSLTProcessor();
-        xsltProcessor.importStylesheet(xslFo);
-
-        // Transform database XML to FO (which is also XML)
-        const resultDoc = xsltProcessor.transformToDocument(dbXml);
-        const serializer = new XMLSerializer();
-        const foString = serializer.serializeToString(resultDoc);
-
-        // Send FO string to server
-        const response = await fetch('/convertToPdf', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml'
-            },
-            body: foString
-        });
+        const response = await fetch('/generatePdf');
 
         if (response.ok) {
             const blob = await response.blob();
