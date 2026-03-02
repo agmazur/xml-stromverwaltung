@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 import xpath from 'xpath';
 import { validateXML } from 'xmllint-wasm';
+import { Xslt, XmlParser } from 'xslt-processor';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -25,6 +26,26 @@ const sendXmlResponse = (res, status, message, data = null) => {
     }
     xml += '\n</response>';
     res.status(status).send(xml);
+};
+
+const parseValidationErrors = (validationResult) => {
+    let errorMsg = 'Validation failed';
+    const errors = validationResult.errors;
+
+    if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
+        errorMsg = 'Passwort inkorrekt';
+    } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
+         const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
+         if (fieldMatch) {
+             errorMsg = `Validation failed: ${fieldMatch.message}`;
+         }
+    } else if (errors.some(e => e.message.includes('is missing'))) {
+         const fieldMatch = errors.find(e => e.message.includes('is missing'));
+         errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
+    }
+
+    const errorDetails = errors.map(e => e.rawMessage).join('\n');
+    return { errorMsg, errorDetails };
 };
 
 // Main route
@@ -53,21 +74,34 @@ app.get('/charts', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public', 'charts.xml'));
 });
 
-app.post('/convertToPdf', async (req, res) => {
+app.get('/generatePdf', async (req, res) => {
     try {
-        let foData = req.body;
+        const dbPath = path.resolve(__dirname, 'data', 'database.xml');
+        const xslPath = path.resolve(__dirname, 'public', 'xsl', 'fo.xsl');
 
-        if (typeof foData === 'object' && foData !== null && Object.keys(foData).length > 0) {
-            foData = foData.fo || Object.keys(foData)[0];
+        if (!fs.existsSync(dbPath)) {
+            return sendXmlResponse(res, 404, 'Database file not found');
         }
 
-        if (!foData || (typeof foData === 'string' && foData.trim() === '')) {
-             return sendXmlResponse(res, 400, 'No FO data provided');
+        if (!fs.existsSync(xslPath)) {
+            return sendXmlResponse(res, 404, 'XSL stylesheet not found');
         }
 
+        const dbXmlStr = fs.readFileSync(dbPath, 'utf-8');
+        const xslStr = fs.readFileSync(xslPath, 'utf-8');
+
+        // Transform XML to FO using server-side XSLT
+        const xslt = new Xslt();
+        const xmlParser = new XmlParser();
+        const foString = await xslt.xsltProcess(
+            xmlParser.xmlParse(dbXmlStr),
+            xmlParser.xmlParse(xslStr)
+        );
+
+        // Send FO to PDF converter
         const response = await fetch('https://fop.xml.hslu-edu.ch/fop.php', {
             method: "POST",
-            body: foData,
+            body: foString,
         });
 
         if (!response.ok) {
@@ -78,9 +112,15 @@ app.post('/convertToPdf', async (req, res) => {
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const tempPath = path.resolve(__dirname, 'temp.pdf');
-        
+
         fs.writeFileSync(tempPath, buffer);
-        res.sendFile(tempPath);
+
+        res.sendFile(tempPath, (err) => {
+            fs.unlink(tempPath, (unlinkErr) => {
+                if (unlinkErr) console.error('Failed to delete temp.pdf:', unlinkErr);
+            });
+            if (err) console.error('Failed to send PDF:', err);
+        });
     } catch (error) {
         console.error('PDF conversion failed:', error);
         sendXmlResponse(res, 500, 'Error generating PDF');
@@ -136,22 +176,7 @@ app.post('/lieferanten', async (req, res) => {
         });
 
         if (!validationResult.valid) {
-            let errorMsg = 'Validation failed';
-            const errors = validationResult.errors;
-            
-            if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
-                errorMsg = 'Passwort inkorrekt';
-            } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
-                 if (fieldMatch) {
-                     errorMsg = `Validation failed: ${fieldMatch.message}`;
-                 }
-            } else if (errors.some(e => e.message.includes('is missing'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is missing'));
-                 errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
-            }
-            
-            const errorDetails = errors.map(e => e.rawMessage).join('\n');
+            const { errorMsg, errorDetails } = parseValidationErrors(validationResult);
             return sendXmlResponse(res, 400, errorMsg, errorDetails);
         }
 
@@ -186,21 +211,7 @@ app.post('/validateSuppliers', async (req, res) => {
         });
 
         if (!validationResult.valid) {
-            let errorMsg = 'Validation failed';
-            const errors = validationResult.errors;
-            
-            if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
-                errorMsg = 'Passwort inkorrekt';
-            } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
-                 if (fieldMatch) {
-                     errorMsg = `Validation failed: ${fieldMatch.message}`;
-                 }
-            } else if (errors.some(e => e.message.includes('is missing'))) {
-                 const fieldMatch = errors.find(e => e.message.includes('is missing'));
-                 errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
-            }
-            const errorDetails = errors.map(e => e.rawMessage).join('\n');
+            const { errorMsg, errorDetails } = parseValidationErrors(validationResult);
             return sendXmlResponse(res, 400, errorMsg, errorDetails);
         }
 
