@@ -6,13 +6,13 @@
         <Kraftwerk id="kw-01a">
             <Name>Bieudron (Grande Dixence)</Name>
             <Stromquelle>Wasserkraft</Stromquelle>
-            <Uptime>94.5%</Uptime>
+            <Uptime>94.5</Uptime>
             <Produktion einheit="GWh">2000</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-01b">
             <Name>Centrale de Verbois</Name>
             <Stromquelle>Solar</Stromquelle>
-            <Uptime>92.0%</Uptime>
+            <Uptime>92.0</Uptime>
             <Produktion einheit="GWh">20</Produktion>
         </Kraftwerk>
     </Region>
@@ -21,13 +21,13 @@
         <Kraftwerk id="kw-02a">
             <Name>Wasserkraftwerk Mühleberg</Name>
             <Stromquelle>Wasserkraft</Stromquelle>
-            <Uptime>98.2%</Uptime>
+            <Uptime>98.2</Uptime>
             <Produktion einheit="GWh">150</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-02b">
             <Name>Solarpark Mont-Soleil</Name>
             <Stromquelle>Solar</Stromquelle>
-            <Uptime>90.5%</Uptime>
+            <Uptime>90.5</Uptime>
             <Produktion einheit="GWh">15</Produktion>
         </Kraftwerk>
     </Region>
@@ -36,13 +36,13 @@
         <Kraftwerk id="kw-03a">
             <Name>Kernkraftwerk Beznau I</Name>
             <Stromquelle>Kernkraft</Stromquelle>
-            <Uptime>91.0%</Uptime>
+            <Uptime>91.0</Uptime>
             <Produktion einheit="GWh">3000</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-03b">
             <Name>Kernkraftwerk Leibstadt</Name>
             <Stromquelle>Kernkraft</Stromquelle>
-            <Uptime>89.5%</Uptime>
+            <Uptime>89.5</Uptime>
             <Produktion einheit="GWh">9000</Produktion>
         </Kraftwerk>
     </Region>
@@ -51,13 +51,13 @@
         <Kraftwerk id="kw-04a">
             <Name>Heizkraftwerk Aubrugg</Name>
             <Stromquelle>Biomasse/Holz</Stromquelle>
-            <Uptime>88.4%</Uptime>
+            <Uptime>88.4</Uptime>
             <Produktion einheit="GWh">120</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-04b">
             <Name>KVA Hagenholz</Name>
             <Stromquelle>Abfall</Stromquelle>
-            <Uptime>95.0%</Uptime>
+            <Uptime>95.0</Uptime>
             <Produktion einheit="GWh">80</Produktion>
         </Kraftwerk>
     </Region>
@@ -66,13 +66,13 @@
         <Kraftwerk id="kw-05a">
             <Name>Pumpspeicherwerk Limmern</Name>
             <Stromquelle>Wasserkraft</Stromquelle>
-            <Uptime>96.8%</Uptime>
+            <Uptime>96.8</Uptime>
             <Produktion einheit="GWh">1450</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-05b">
             <Name>Windpark Gütsch</Name>
             <Stromquelle>Wind</Stromquelle>
-            <Uptime>85.2%</Uptime>
+            <Uptime>85.2</Uptime>
             <Produktion einheit="GWh">1.2</Produktion>
         </Kraftwerk>
     </Region>
@@ -81,13 +81,13 @@
         <Kraftwerk id="kw-06a">
             <Name>Kraftwerk Amsteg</Name>
             <Stromquelle>Wasserkraft</Stromquelle>
-            <Uptime>99.1%</Uptime>
+            <Uptime>99.1</Uptime>
             <Produktion einheit="GWh">450</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-06b">
             <Name>Kraftwerk Göschenen</Name>
             <Stromquelle>Wasserkraft</Stromquelle>
-            <Uptime>97.8%</Uptime>
+            <Uptime>97.8</Uptime>
             <Produktion einheit="GWh">400</Produktion>
         </Kraftwerk>
     </Region>
@@ -96,13 +96,13 @@
         <Kraftwerk id="kw-07a">
             <Name>Maggia Kraftwerke</Name>
             <Stromquelle>Wasserkraft</Stromquelle>
-            <Uptime>97.5%</Uptime>
+            <Uptime>97.5</Uptime>
             <Produktion einheit="GWh">600</Produktion>
         </Kraftwerk>
         <Kraftwerk id="kw-07b">
             <Name>Parco Eolico del S. Gottardo</Name>
             <Stromquelle>Wind</Stromquelle>
-            <Uptime>82.5%</Uptime>
+            <Uptime>82.5</Uptime>
             <Produktion einheit="GWh">10</Produktion>
         </Kraftwerk>
     </Region>

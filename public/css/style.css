@@ -125,9 +125,4 @@ iframe {
 
 .region-detail { display: none; }
 .region-detail:target { display: block !important; }
-
-
-iframe {
-  border: 1pt solid #ccc;
-  margin-top: 10px;
-}
+.region-detail:target ~ .select-hint { display: none; }
