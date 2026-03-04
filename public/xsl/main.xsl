@@ -45,11 +45,16 @@
               <h2 style="font-family: sans-serif; color: #333; text-align: center;">Regionale Kraftwerks-Analyse</h2>
               
               <div id="stats-container" style="display: flex; gap: 20px; align-items: flex-start;">
+                
                 <div style="flex: 1; background: #fdfdfd; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                   <h3 style="font-family: sans-serif;">Region auswählen</h3>
-                  <object data="/landkarte.svg" type="image/svg+xml" width="100%"></object>
+                  
+                  <div class="map-wrapper" style="position: relative; width: 100%; border: 1px solid #ccc;">
+<img src="/img/Landkartexsd.png" style="width: 100%; display: block;" alt="Hintergrundkarte" />                    <object data="/landkarte.svg" type="image/svg+xml" 
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.4; pointer-events: auto;">
+                    </object>
+                  </div>
                 </div>
-
                 <div style="flex: 1; background: #fdfdfd; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                   <h3 style="font-family: sans-serif;">Kraftwerks-Details</h3>
                   <iframe name="daten-anzeige" src="/data/kraftwerke.xml" style="width: 100%; height: 500px; border: none;"></iframe>
