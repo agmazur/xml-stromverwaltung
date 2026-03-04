@@ -1,9 +1,8 @@
 <svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg">
     <style>
         .region-shape { 
-            fill: rgba(128, 128, 128, 0.4); 
-            stroke: white; 
-            stroke-width: 1; 
+            fill: rgba(128, 128, 128, 0.0);
+            stroke-width: 1;
             transition: fill 0.3s;
         }
         .region-shape:hover { 
@@ -51,7 +50,6 @@
         150,230 153,226 155,224 155,220 156,216 
         153,213 149,213
     " class="region-shape" />
-        <text x="54" y="220" fill="black" font-size="10" font-family="sans-serif" pointer-events="none">Genfersee</text>
     </a>
 
     <a href="#region-2" target="daten-anzeige">
@@ -68,7 +66,6 @@
         188,229 182,235 171,237 162,241 151,242 
         154,223 155,211 148,215 138,221 132,225
     " class="region-shape" />
-        <text x="150" y="145" fill="black" font-size="10" font-family="sans-serif" pointer-events="none">Mittelland</text>
     </a>
 
     <a href="#region-3" target="daten-anzeige">
@@ -81,7 +78,6 @@
         266,68 250,62 229,71 219,67 203,72 
         196,72
     " class="region-shape" />
-        <text x="225" y="81" fill="black" font-size="7" font-family="sans-serif" pointer-events="none">Nordwest</text>
     </a>
 
     <a href="#region-4" target="daten-anzeige">
@@ -94,7 +90,6 @@
         293,54 289,50 286,55 285,59 284,63 
         281,66 281,60
     " class="region-shape" />
-        <text x="275" y="85" fill="black" font-size="8" font-family="sans-serif" pointer-events="none">Zürich</text>
     </a>
 
     <a href="#region-5" target="daten-anzeige">
@@ -107,7 +102,6 @@
                 425,214 432,203 446,195 450,205 468,210 
                 470,150 459,145 439,164 417,157 405,142
             " class="region-shape" />
-        <text x="350" y="180" fill="black" font-size="10" font-family="sans-serif" pointer-events="none">Ost-CH</text>
     </a>
 
     <a href="#region-6" target="daten-anzeige">
@@ -129,7 +123,6 @@
         227,180 232,179 238,178 241,181 243,181 
         251,180 257,181 263,178 266,178 271,180
     " class="region-shape" />
-        <text x="238" y="155" fill="black" font-size="8" font-family="sans-serif" pointer-events="none">Zentral-CH</text>
     </a>
 
     <a href="#region-7" target="daten-anzeige">
@@ -149,6 +142,5 @@
         287,265 284,261 281,257 275,255 273,253 
         272,247 274,242 275,237
     " class="region-shape" />
-        <text x="288" y="245" fill="black" font-size="10" font-family="sans-serif" pointer-events="none">Tessin</text>
     </a>
 </svg>
