@@ -44,7 +44,7 @@ const parseValidationErrors = (validationResult) => {
          errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
     }
 
-    const errorDetails = errors.map(e => e.rawMessage).join('\n');
+    const errorDetails = errors.map(e => e.rawMessage || e.message || 'Unknown error').join('\n');
     return { errorMsg, errorDetails };
 };
 
@@ -133,14 +133,18 @@ app.get('/generatePdf', async (req, res) => {
         const buffer = Buffer.from(arrayBuffer);
         const tempPath = path.resolve(__dirname, 'temp.pdf');
 
-        fs.writeFileSync(tempPath, buffer);
-
-        res.sendFile(tempPath, (err) => {
-            fs.unlink(tempPath, (unlinkErr) => {
-                if (unlinkErr) console.error('Failed to delete temp.pdf:', unlinkErr);
+        try {
+            fs.writeFileSync(tempPath, buffer);
+            res.sendFile(tempPath, (err) => {
+                fs.unlink(tempPath, (unlinkErr) => {
+                    if (unlinkErr) console.error('Failed to delete temp.pdf:', unlinkErr);
+                });
+                if (err) console.error('Failed to send PDF:', err);
             });
-            if (err) console.error('Failed to send PDF:', err);
-        });
+        } catch (writeErr) {
+            fs.unlink(tempPath, () => {});
+            throw writeErr;
+        }
     } catch (error) {
         console.error('PDF conversion failed:', error);
         sendXmlResponse(res, 500, 'Error generating PDF');
@@ -256,6 +260,9 @@ app.post('/updateData', async (req, res) => {
         const doc = parser.parseFromString(dbXmlStr, 'application/xml');
 
         // Logic to update node - assuming structure: //region[@id="..."]
+        if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) {
+            return sendXmlResponse(res, 400, 'Invalid region id');
+        }
         const select = xpath.useNamespaces({});
         const nodes = select(`//region[@id="${id}"]`, doc);
         

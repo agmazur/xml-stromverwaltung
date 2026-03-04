@@ -34,7 +34,7 @@
                                 <tr>
                                     <td><xsl:value-of select="Name"/></td>
                                     <td><xsl:value-of select="Stromquelle"/></td>
-                                    <td><xsl:value-of select="Uptime"/></td>
+                                    <td><xsl:value-of select="Uptime"/>%</td>
                                     <td><xsl:value-of select="Produktion"/>&#160;<xsl:value-of select="Produktion/@einheit"/></td>
                                 </tr>
                             </xsl:for-each>
