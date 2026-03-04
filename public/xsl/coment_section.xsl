@@ -5,15 +5,7 @@
     <xsl:template match="/">
         <html>
         <head>
-            <style>
-                .comment-container { font-family: sans-serif; max-width: 600px; margin: 20px; }
-                .comment { border-left: 3px solid #ccc; padding: 10px; margin-bottom: 15px; background: #f9f9f9; }
-                .author { font-weight: bold; color: #2c3e50; }
-                .date { font-size: 0.8em; color: #7f8c8d; margin-left: 10px; }
-                .text { margin: 10px 0; line-height: 1.4; }
-                .stats { font-size: 0.9em; color: #27ae60; }
-                .replies { margin-left: 30px; margin-top: 10px; }
-            </style>
+            <link rel="stylesheet" type="text/css" href="/css/forums.css" />
         </head>
         <body>
             <div class="comment-container">
