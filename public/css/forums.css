@@ -5,3 +5,19 @@
 .text { margin: 10px 0; line-height: 1.4; }
 .stats { font-size: 0.9em; color: #27ae60; }
 .replies { margin-left: 30px; margin-top: 10px; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: none;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.25;          /* adjust 0.0 - 1.0 */
+  z-index: -1;
+  pointer-events: none;
+}
+body{
+    padding: 0;
+    margin: 0;
+}
