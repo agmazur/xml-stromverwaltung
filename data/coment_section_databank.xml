@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="C:\Dev\xml-stromverwaltung\public\xsl\coment_section.xsl"?>
+<komentarsection id="0">
+    <komment id="1" parent_id="">
+        <kommentor_name>Andrii Mazur</kommentor_name>
+        <komment_date>09-02-26</komment_date>
+        <like_ammount>0</like_ammount>
+        <dislike_ammount>0</dislike_ammount>
+        <komment_text>Hello world</komment_text>
+    </komment>
+    <komment id="2" parent_id="">
+        <kommentor_name>Andrii Mazur 2</kommentor_name>
+        <komment_date>19-02-26</komment_date>
+        <like_ammount>3</like_ammount>
+        <dislike_ammount>5</dislike_ammount>
+        <komment_text>2nd coment</komment_text>
+    </komment>
+</komentarsection>
