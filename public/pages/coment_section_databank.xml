@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="C:\Dev\xml-stromverwaltung\public\xsl\coment_section.xsl"?>
+<?xml-stylesheet type="text/xsl" href="/xsl/coment_section.xsl"?>
 <komentarsection id="0">
     <komment id="1" parent_id="">
         <kommentor_name>Andrii Mazur</kommentor_name>
@@ -16,3 +16,20 @@
         <komment_text>2nd coment</komment_text>
     </komment>
 </komentarsection>
+<!-- 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Internal Module</title>
+    <link rel="stylesheet" type="text/css" href="../public/css/forums.css" />
+  </head>
+  <body>
+    <div id="content">This is my modular content!</div>
+  </body>
+</html>
+
+
+
+ -->
