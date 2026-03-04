@@ -3,7 +3,8 @@
 .author { font-weight: bold; color: #2c3e50; }
 .date { font-size: 0.8em; color: #7f8c8d; margin-left: 10px; }
 .text { margin: 10px 0; line-height: 1.4; }
-.stats { font-size: 0.9em; color: #27ae60; }
+.like_ammount { font-size: 0.9em; color: #27ae60; }
+.dislike_ammount { font-size: 0.9em; color: #ff0037; }
 .replies { margin-left: 30px; margin-top: 10px; }
 body::before {
   content: "";

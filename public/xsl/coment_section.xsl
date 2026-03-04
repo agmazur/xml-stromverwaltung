@@ -22,10 +22,12 @@
             <span class="author"><xsl:value-of select="kommentor_name"/></span>
             <span class="date"><xsl:value-of select="komment_date"/></span>
             <div class="text"><xsl:value-of select="komment_text"/></div>
-            <div class="stats">
+            <span class="like_ammount">
                 👍 <xsl:value-of select="like_ammount"/> | 
+            </span>
+            <span class="dislike_ammount">
                 👎 <xsl:value-of select="dislike_ammount"/>
-            </div>
+            </span>
 
             <xsl:variable name="currentId" select="@id"/>
             <div class="replies">
