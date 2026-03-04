@@ -57,7 +57,7 @@
                 </div>
                 <div style="flex: 1; background: #fdfdfd; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
                   <h3 style="font-family: sans-serif;">Kraftwerks-Details</h3>
-                  <iframe name="daten-anzeige" src="/data/kraftwerke.xml" style="width: 100%; height: 500px; border: none;"></iframe>
+                  <iframe name="daten-anzeige" src="/kraftwerke" style="width: 100%; height: 500px; border: none;"></iframe>
                 </div>
               </div>
             </section>
