@@ -10,7 +10,7 @@
       </fo:layout-master-set>
       <fo:page-sequence master-reference="A4">
         <fo:flow flow-name="xsl-region-body">
-          <fo:block font-size="24pt" font-weight="bold" space-after="1cm">Enegiepreise der Regionen</fo:block>
+          <fo:block font-size="24pt" font-weight="bold" space-after="1cm">Energiepreise der Regionen</fo:block>
           <xsl:apply-templates select="//region" />
         </fo:flow>
       </fo:page-sequence>
