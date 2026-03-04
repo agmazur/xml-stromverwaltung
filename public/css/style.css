@@ -125,6 +125,7 @@ iframe {
 
 .region-detail { display: none; }
 .region-detail:target { display: block !important; }
+.region-detail:target ~ .select-hint { display: none; }
 
 
 iframe {

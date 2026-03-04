@@ -74,6 +74,26 @@ app.get('/charts', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'public', 'charts.xml'));
 });
 
+app.get('/kraftwerke', async (req, res) => {
+    try {
+        const xmlPath = path.resolve(__dirname, 'data', 'kraftwerke.xml');
+        const xslPath = path.resolve(__dirname, 'public', 'xsl', 'kraftwerke.xsl');
+        const xmlStr = fs.readFileSync(xmlPath, 'utf-8');
+        const xslStr = fs.readFileSync(xslPath, 'utf-8');
+        const xslt = new Xslt();
+        const xmlParser = new XmlParser();
+        const result = await xslt.xsltProcess(
+            xmlParser.xmlParse(xmlStr),
+            xmlParser.xmlParse(xslStr)
+        );
+        res.set('Content-Type', 'text/html');
+        res.send(result);
+    } catch (error) {
+        console.error('Kraftwerke rendering failed:', error);
+        sendXmlResponse(res, 500, 'Error rendering kraftwerke page');
+    }
+});
+
 app.get('/generatePdf', async (req, res) => {
     try {
         const dbPath = path.resolve(__dirname, 'data', 'database.xml');
