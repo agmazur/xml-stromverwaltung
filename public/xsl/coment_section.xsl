@@ -23,7 +23,7 @@
             <span class="date"><xsl:value-of select="komment_date"/></span>
             <div class="text"><xsl:value-of select="komment_text"/></div>
             <span class="like_ammount">
-                👍 <xsl:value-of select="like_ammount"/> | 
+                👍 <xsl:value-of select="like_ammount"/>
             </span>
             <span class="dislike_ammount">
                 👎 <xsl:value-of select="dislike_ammount"/>
