@@ -3,14 +3,38 @@
 <?xml-stylesheet type="text/xsl" href="xsl/main.xsl"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>EnerCheck Dashboard</title>
+    <title>EnerCheck</title>
   </head>
   <body>
     <div id="content">
-      <p id="description">Welcome to EnerCheck. A barebones XML/XSLT/FO baseline.</p>
-      <div id="actions">
-        <button id="pdf">Generate PDF Report</button>
+
+      <div class="main">
+        <h1>Wo Strom <span class="faded">transparent</span> wird.</h1>
+        <p>Willkommen auf der Plattform EnerCheck! <br/>
+          Ob Sie Strom beziehen oder produzieren - hier finden Sie alles, was Sie brauchen.
+        </p>
+        <h2>Wieso EnerCheck?</h2>
+        <p>Die letzten paar Jahre waren geprägt von einer zunehmenden Energiekrise: Preise stiegen, Vertrauen sank.<br/>
+          Um dies zu lösen, hat die "Energie-Preis-Auskunfts-Zentralstelle" (EPAZS) das Vorhaben "EPAZS bi de lüt" lanciert.
+          Durch dieses Vorhaben wurden Mitarbeitende in sämtliche Städte der Schweiz geschickt, um eine der grössten Herausforderungen
+          des Energiemarkts zu adressieren: <b>Transparenz.</b>
+          </p>
+        <p>
+          Wenn auch durch dessen Umsetzung die Kommunikation und Überwachung der Strompreise erleichtert wurde, kam dies mit
+          erheblichen Zusatzkosten.
+          Diese gilt es nun zu reduzieren, wobei die Kommunikation und Transparenz aufrechterhalten werden sollen.
+        </p>
+        <p>
+          Die Antwort darauf ist <b>EnerCheck</b>. Hier finden Sie alles, was für einen transparenten Stromkauf und -Vertrieb nötig ist.
+        </p>
+        <p>
+          Bei Fragen zur Plattform, die Übersichten oder die Interaktion besuchen Sie bitte das <a href="/forum">Forum.</a>
+        </p>
+        <br/>
       </div>
-    </div>
-  </body>
+      <div>
+        <img src="img/family.jpg" alt="Family using electricity" width="600" height="400" />
+      </div>
+
+    </div> </body>
 </html>

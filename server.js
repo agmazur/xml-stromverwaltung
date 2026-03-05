@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { DOMParser, XMLSerializer } from '@xmldom/xmldom';
 import xpath from 'xpath';
 import { validateXML } from 'xmllint-wasm';
+import { Xslt, XmlParser } from 'xslt-processor';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -12,7 +13,8 @@ const PORT = process.env.ENER_CHECK_PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
-app.use(express.text({ type: 'application/xml' }));
+
+app.use(express.text({ type: ['application/xml', 'text/plain', 'text/xml'], limit: '10mb' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -26,27 +28,100 @@ const sendXmlResponse = (res, status, message, data = null) => {
     res.status(status).send(xml);
 };
 
+const parseValidationErrors = (validationResult) => {
+    let errorMsg = 'Validation failed';
+    const errors = validationResult.errors;
+
+    if (errors.some(e => e.message.includes('password') && (e.message.includes('length') || e.message.includes('facet')))) {
+        errorMsg = 'Passwort inkorrekt';
+    } else if (errors.some(e => e.message.includes('is not a valid value of the atomic type'))) {
+         const fieldMatch = errors.find(e => e.message.includes('is not a valid value of the atomic type'));
+         if (fieldMatch) {
+             errorMsg = `Validation failed: ${fieldMatch.message}`;
+         }
+    } else if (errors.some(e => e.message.includes('is missing'))) {
+         const fieldMatch = errors.find(e => e.message.includes('is missing'));
+         errorMsg = fieldMatch ? fieldMatch.message : 'Field missing';
+    }
+
+    const errorDetails = errors.map(e => e.rawMessage || e.message || 'Unknown error').join('\n');
+    return { errorMsg, errorDetails };
+};
+
 // Main route
 app.get('/', (req, res) => {
     res.set('Content-Type', 'application/xhtml+xml');
     res.sendFile(path.resolve(__dirname, 'public', 'index.xml'));
 });
 
-app.post('/convertToPdf', async (req, res) => {
+app.get('/lieferanten', (req, res) => {
+    res.set('Content-Type', 'application/xhtml+xml');
+    res.sendFile(path.resolve(__dirname, 'public', 'pages', 'lieferanten.xml'));
+});
+
+app.get('/kunden', (req, res) => {
+    res.set('Content-Type', 'application/xhtml+xml');
+    res.sendFile(path.resolve(__dirname, 'public', 'pages', 'kunden.xml'));
+});
+
+app.get('/forum', (req, res) => {
+    res.set('Content-Type', 'application/xhtml+xml');
+    res.sendFile(path.resolve(__dirname, 'public', 'pages', 'forum.xml'));
+});
+
+app.get('/charts', (req, res) => {
+    res.set('Content-Type', 'application/xhtml+xml');
+    res.sendFile(path.resolve(__dirname, 'public', 'charts.xml'));
+});
+
+app.get('/kraftwerke', async (req, res) => {
     try {
-        let foData = req.body;
+        const xmlPath = path.resolve(__dirname, 'data', 'kraftwerke.xml');
+        const xslPath = path.resolve(__dirname, 'public', 'xsl', 'kraftwerke.xsl');
+        const xmlStr = fs.readFileSync(xmlPath, 'utf-8');
+        const xslStr = fs.readFileSync(xslPath, 'utf-8');
+        const xslt = new Xslt();
+        const xmlParser = new XmlParser();
+        const result = await xslt.xsltProcess(
+            xmlParser.xmlParse(xmlStr),
+            xmlParser.xmlParse(xslStr)
+        );
+        res.set('Content-Type', 'text/html');
+        res.send(result);
+    } catch (error) {
+        console.error('Kraftwerke rendering failed:', error);
+        sendXmlResponse(res, 500, 'Error rendering kraftwerke page');
+    }
+});
 
-        if (typeof foData === 'object' && foData !== null && Object.keys(foData).length > 0) {
-            foData = foData.fo || Object.keys(foData)[0];
+app.get('/generatePdf', async (req, res) => {
+    try {
+        const dbPath = path.resolve(__dirname, 'data', 'database.xml');
+        const xslPath = path.resolve(__dirname, 'public', 'xsl', 'fo.xsl');
+
+        if (!fs.existsSync(dbPath)) {
+            return sendXmlResponse(res, 404, 'Database file not found');
         }
 
-        if (!foData || (typeof foData === 'string' && foData.trim() === '')) {
-             return sendXmlResponse(res, 400, 'No FO data provided');
+        if (!fs.existsSync(xslPath)) {
+            return sendXmlResponse(res, 404, 'XSL stylesheet not found');
         }
 
+        const dbXmlStr = fs.readFileSync(dbPath, 'utf-8');
+        const xslStr = fs.readFileSync(xslPath, 'utf-8');
+
+        // Transform XML to FO using server-side XSLT
+        const xslt = new Xslt();
+        const xmlParser = new XmlParser();
+        const foString = await xslt.xsltProcess(
+            xmlParser.xmlParse(dbXmlStr),
+            xmlParser.xmlParse(xslStr)
+        );
+
+        // Send FO to PDF converter
         const response = await fetch('https://fop.xml.hslu-edu.ch/fop.php', {
             method: "POST",
-            body: foData,
+            body: foString,
         });
 
         if (!response.ok) {
@@ -57,12 +132,117 @@ app.post('/convertToPdf', async (req, res) => {
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         const tempPath = path.resolve(__dirname, 'temp.pdf');
-        
-        fs.writeFileSync(tempPath, buffer);
-        res.sendFile(tempPath);
+
+        try {
+            fs.writeFileSync(tempPath, buffer);
+            res.sendFile(tempPath, (err) => {
+                fs.unlink(tempPath, (unlinkErr) => {
+                    if (unlinkErr) console.error('Failed to delete temp.pdf:', unlinkErr);
+                });
+                if (err) console.error('Failed to send PDF:', err);
+            });
+        } catch (writeErr) {
+            fs.unlink(tempPath, () => {});
+            throw writeErr;
+        }
     } catch (error) {
         console.error('PDF conversion failed:', error);
         sendXmlResponse(res, 500, 'Error generating PDF');
+    }
+});
+
+app.post('/lieferanten', async (req, res) => {
+    const xmlSnippet = req.body; // expected: <lieferant ...>...</lieferant>
+    const suppliersPath = path.resolve(__dirname, 'data', 'lieferanten.xml');
+    const xsdPath = path.resolve(__dirname, 'data', 'lieferanten.xsd');
+
+    try {
+        if (!xmlSnippet || xmlSnippet.trim() === '') {
+            return sendXmlResponse(res, 400, 'No XML provided');
+        }
+
+        const parser = new DOMParser();
+
+        // Parse snippet safely by wrapping it
+        const wrappedSnippetDoc = parser.parseFromString(
+            `<?xml version="1.0" encoding="UTF-8"?><lieferanten>${xmlSnippet}</lieferanten>`,
+            'application/xml'
+        );
+
+        const snippetSupplier = wrappedSnippetDoc.getElementsByTagName('lieferant')[0];
+        if (!snippetSupplier) {
+            return sendXmlResponse(res, 400, 'Must provide a <lieferant> element');
+        }
+
+        if (!fs.existsSync(suppliersPath)) {
+            fs.writeFileSync(suppliersPath, `<?xml version="1.0" encoding="UTF-8"?><lieferanten/>`, 'utf-8');
+        }
+
+        const suppliersXmlStr = fs.readFileSync(suppliersPath, 'utf-8');
+        const xsdXmlStr = fs.readFileSync(xsdPath, 'utf-8');
+
+        const suppliersDoc = parser.parseFromString(suppliersXmlStr, 'application/xml');
+        const suppliersRoot = suppliersDoc.documentElement;
+
+        if (!suppliersRoot || suppliersRoot.nodeName !== 'lieferanten') {
+            return sendXmlResponse(res, 500, 'Invalid suppliers storage file (expected <lieferanten>)');
+        }
+
+        // Correctly import the node into the target document
+        const supplierToAppend = suppliersDoc.importNode(snippetSupplier, true);
+        suppliersRoot.appendChild(supplierToAppend);
+
+        const updatedXmlStr = new XMLSerializer().serializeToString(suppliersDoc);
+
+        const validationResult = await validateXML({
+            xml: [{ fileName: 'lieferanten.xml', contents: String(updatedXmlStr) }],
+            schema: [String(xsdXmlStr)]
+        });
+
+        if (!validationResult.valid) {
+            const { errorMsg, errorDetails } = parseValidationErrors(validationResult);
+            return sendXmlResponse(res, 400, errorMsg, errorDetails);
+        }
+
+        fs.writeFileSync(suppliersPath, updatedXmlStr, 'utf-8');
+        return sendXmlResponse(res, 200, 'Supplier saved');
+    } catch (error) {
+        console.error('Saving supplier failed:', error);
+        return sendXmlResponse(res, 500, 'Internal Server Error', error.message);
+    }
+});
+
+app.post('/validateSuppliers', async (req, res) => {
+    const xmlSnippet = req.body;
+    const xsdPath = path.resolve(__dirname, 'data', 'lieferanten.xsd');
+
+    try {
+        if (!xmlSnippet || xmlSnippet.trim() === '') {
+            return sendXmlResponse(res, 400, 'No XML provided');
+        }
+
+        const xsdXmlStr = fs.readFileSync(xsdPath, 'utf-8');
+        
+        // Wrap snippet in root element for validation if it's just a <lieferant>
+        let xmlToValidate = xmlSnippet;
+        if (xmlSnippet.includes('<lieferant') && !xmlSnippet.includes('<lieferanten')) {
+            xmlToValidate = `<?xml version="1.0" encoding="UTF-8"?><lieferanten>${xmlSnippet}</lieferanten>`;
+        }
+
+        const validationResult = await validateXML({
+            xml: [{ fileName: 'validate.xml', contents: String(xmlToValidate) }],
+            schema: [String(xsdXmlStr)]
+        });
+
+        if (!validationResult.valid) {
+            const { errorMsg, errorDetails } = parseValidationErrors(validationResult);
+            return sendXmlResponse(res, 400, errorMsg, errorDetails);
+        }
+
+        return sendXmlResponse(res, 200, 'XML is valid against XSD');
+    } catch (error) {
+        console.error('Validation failed:', error);
+        return sendXmlResponse(res, 500, 'Internal Server Error', error.message);
     }
 });
 
@@ -79,27 +259,31 @@ app.post('/updateData', async (req, res) => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(dbXmlStr, 'application/xml');
 
-        // Logic to update node - assuming structure: //item[@id="..."]
+        // Logic to update node - assuming structure: //region[@id="..."]
+        if (!id || !/^[A-Za-z0-9_-]+$/.test(id)) {
+            return sendXmlResponse(res, 400, 'Invalid region id');
+        }
         const select = xpath.useNamespaces({});
-        const nodes = select(`//item[@id="${id}"]`, doc);
+        const nodes = select(`//region[@id="${id}"]`, doc);
         
         if (nodes.length > 0) {
-            const itemNode = nodes[0];
-            const historyNode = itemNode.getElementsByTagName('history')[0];
+            const regionNode = nodes[0];
+            const pricesNode = regionNode.getElementsByTagName('prices')[0];
             
-            const entryNode = doc.createElement('entry');
-            entryNode.setAttribute('date', date);
-            entryNode.appendChild(doc.createTextNode(value));
+            const priceNode = doc.createElement('price');
+            priceNode.setAttribute('date', date);
+            priceNode.setAttribute('unit', 'Rp/kWh');
+            priceNode.appendChild(doc.createTextNode(value));
             
-            if (historyNode) {
-                historyNode.appendChild(entryNode);
+            if (pricesNode) {
+                pricesNode.appendChild(priceNode);
             } else {
-                const newHistory = doc.createElement('history');
-                newHistory.appendChild(entryNode);
-                itemNode.appendChild(newHistory);
+                const newPrices = doc.createElement('prices');
+                newPrices.appendChild(priceNode);
+                regionNode.appendChild(newPrices);
             }
         } else {
-            return sendXmlResponse(res, 404, 'Item not found');
+            return sendXmlResponse(res, 404, 'Region not found');
         }
 
         const updatedXmlStr = new XMLSerializer().serializeToString(doc);
@@ -108,7 +292,7 @@ app.post('/updateData', async (req, res) => {
         const validationResult = await validateXML({
             xml: [{
                 fileName: 'database.xml',
-                content: updatedXmlStr
+                contents: updatedXmlStr
             }],
             schema: [xsdXmlStr]
         });
@@ -117,7 +301,8 @@ app.post('/updateData', async (req, res) => {
             fs.writeFileSync(dbPath, updatedXmlStr, 'utf-8');
             sendXmlResponse(res, 200, 'Data updated successfully');
         } else {
-            sendXmlResponse(res, 400, 'Validation failed', validationResult.errors.join('\n'));
+            const errorDetails = validationResult.errors.map(e => e.rawMessage).join('\n');
+            sendXmlResponse(res, 400, 'Validation failed', errorDetails);
         }
     } catch (error) {
         console.error('Update failed:', error);

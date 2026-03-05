@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<?xml-stylesheet type="text/xsl" href="/xsl/main.xsl"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>EnerCheck</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+
+    <body>
+        <div class="main">
+            <h2>Forum</h2>
+            <p>Willkommen beim Forum!<br/><br/>
+            Wollen Sie wissen, woher die Daten auf Ihrer Übersicht kommen?<br/>
+            Haben Sie Probleme mit der Filterung oder mit dem Export?<br/>
+            Oder möchten Sie wissen, wie die Plattform bedient wird?<br/>
+            Für diese und viele weitere Fragen ist das Forum da. Teilen Sie Ihre Unklarheiten im Forum oder durchstöbern Sie die Fragen anderer.
+            </p>
+            <img src="/img/smart_dog.jpg" alt="Dog with glasses" width="480" height="600" />
+        </div>
+
+
+
+        <script type="text/javascript" src="/js/app.js"></script>
+    </body>
+</html>

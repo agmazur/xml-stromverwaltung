@@ -1,16 +1,38 @@
 body {
   font-family: sans-serif;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 20px auto;
   padding: 0 20px;
-  background-color: #f4f4f4;
+  background-color: #f0f4f8;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("../img/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.25;          /* adjust 0.0 - 1.0 */
+  z-index: -1;
+  pointer-events: none;
+}
+
+.faded{
+  opacity: 0.5;
+  color: #ffb600;
 }
 
 header {
   background: #333;
-  color: #fff;
+  color: #f6b600;
   padding: 1rem;
   text-align: center;
+}
+
+.header h1 {
+  color: #ffb600;
 }
 
 main {
@@ -20,23 +42,87 @@ main {
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+/* Navigation */
+.nav {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.nav a {
+  color: #f6b600;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid #f6b600;
+  border-radius: 6px;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.nav a:hover {
+  background-color: #f6b600;
+  color: #333;
+}
+
+/* ... existing code ... */
 .actions {
   margin: 20px 0;
 }
 
-button {
+button, .button-link {
   padding: 10px 20px;
-  background: #007bff;
-  color: #fff;
+  background: #f6b600;
+  color: #333;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  vertical-align: middle;
 }
 
-button:hover {
-  background: #0056b3;
+button:hover, .button-link:hover {
+  background: #333;
+  color: #f6b600;
+}
+
+.button-nav{
+  color: #f6b600;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 2px solid #f6b600;
+  background-color: transparent;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.button-nav:hover{
+  background-color: #f6b600;
+  color: #333;
 }
 
 iframe {
   border: 1pt solid #ccc;
   margin-top: 10px;
 }
+
+.region-shape {
+  fill: #444;
+  stroke: #fff;
+  cursor: pointer;
+  transition: fill 0.3s;
+}
+
+.region-shape:hover {
+  fill: #ffd700;
+}
+
+
+.region-detail { display: none; }
+.region-detail:target { display: block !important; }
+.region-detail:target ~ .select-hint { display: none; }

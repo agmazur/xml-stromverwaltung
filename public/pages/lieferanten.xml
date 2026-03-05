@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<?xml-stylesheet type="text/xsl" href="/xsl/main.xsl"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>EnerCheck</title>
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+
+    <body>
+        <div class="main">
+            <h2>Lieferanten</h2>
+            <p>Sie sind das Rückgrat der Schweiz!<br/>
+            Über die Fläche "Daten aktualisieren" können Sie Ihre aktuellen Stromwerte veröffentlichen.<br/>
+                Sie können ebenfalls eine Übersicht generieren lassen, um den Preisverlauf in Ihrer Region zu verfolgen.
+            </p>
+            <div>
+                <img src="/img/producer.jpg" alt="electricity producer at work" width="600" height="400" />
+            </div>
+
+            <h3>Daten aktualisieren</h3>
+            <form id="lieferanten-form" action="/lieferanten" method="post">
+                <div>
+                    <label for="sup-region">Region</label><br />
+                    <select id="sup-region" name="region">
+                        <option value="">(leer)</option>
+                        <option value="Région lémanique">Région lémanique</option>
+                        <option value="Espace Mittelland">Espace Mittelland</option>
+                        <option value="Nordwestschweiz">Nordwestschweiz</option>
+                        <option value="Zürich">Zürich</option>
+                        <option value="Ostschweiz">Ostschweiz</option>
+                        <option value="Zentralschweiz">Zentralschweiz</option>
+                        <option value="Ticino">Ticino</option>
+                    </select><br /><br />
+                </div>
+
+                <div>
+                    <label for="sup-password">Passwort (10 Zeichen)</label><br />
+                    <input id="sup-password" name="password" type="password" maxlength="10" />
+                    <br /><br />
+                </div>
+
+                <div>
+                    <label for="sup-date">Datum</label><br />
+                    <input id="sup-date" name="date" type="text" />
+                    <br /><br />
+                </div>
+
+                <div>
+                    <label for="sup-price">Preis</label><br />
+                    <input id="sup-price" name="price" type="text" />
+                    <br /><br />
+                </div>
+
+                <div>
+                    <label for="sup-type">Typ</label><br />
+                    <select id="sup-type" name="type">
+                        <option value="">(leer)</option>
+                        <option value="strom">strom</option>
+                        <option value="gas">gas</option>
+                        <option value="solar">solar</option>
+                        <option value="mixed">gemischt</option>
+                    </select>
+                </div>
+
+                <div class="actions">
+                    <button type="submit">Eintrag speichern</button>
+                </div>
+            </form>
+
+            <div id="lieferanten-status"></div>
+        </div>
+
+        <script type="text/javascript" src="/js/app.js"></script>
+    </body>
+</html>
