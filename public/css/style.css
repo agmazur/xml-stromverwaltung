@@ -131,3 +131,21 @@ iframe {
   border: 0pt solid #ccc;
   margin-top: 10px;
 }
+#messege_div {
+  width: 100%;
+}
+
+/* Use a shared class or target both types */
+#name_input, #coment_input {
+  width: 100%;
+  box-sizing: border-box; /* Crucial: includes padding in the 100% width */
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+#coment_input {
+  height: 100px;
+  resize: vertical; /* Allows user to pull the corner to resize */
+  align-items: end;
+}
