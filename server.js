@@ -283,37 +283,6 @@ app.post('/updateData', async (req, res) => {
     }
 });
 
-app.post('/add-comment2', (req, res) => {
-    console.log(req.body);
-    
-
-    // 1. Read the file
-    fs.readFile(xmlPath, 'utf8', (err, data) => {
-        if (err) return res.status(500).send("File not found");
-
-        // 2. Prepare the new XML block
-        const { name, text, date } = req.body;
-        console.log(req.body);
-        // 
-        const newEntry = `    <komment id="${Date.now()}" parent_id="">
-        <kommentor_name>${name}</kommentor_name>
-        <komment_date>${date}</komment_date>
-        <like_ammount>0</like_ammount>
-        <dislike_ammount>0</dislike_ammount>
-        <komment_text>${text}</komment_text>
-    </komment>\n</komentarsection>`;
-    console.log(name,text,date)
-
-        // 3. Insert before the closing root tag
-        const updatedXml = data.replace('</komentarsection>', newEntry);
-
-        // 4. Write back to disk
-        fs.writeFile(xmlPath, updatedXml, (err) => {
-            if (err) return res.status(500).send("Save failed");
-            res.send({ success: true });
-        });
-    });
-});
 
 app.post("/add_coment",(req,res)=>{
     // get messege 1 and uynpack it
